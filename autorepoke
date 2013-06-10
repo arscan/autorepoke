@@ -1,0 +1,71 @@
+#!/usr/bin/env ruby
+
+require 'selenium-webdriver'
+
+# returns a webdriver instance
+# all logged in and ready to go
+def startup(username, password)
+
+  driver = Selenium::WebDriver.for :firefox
+  
+  #close the browser if we are getting interupted
+  trap("INT") do
+    driver.quit
+    exit
+  end
+
+  driver.navigate.to "https://www.facebook.com/pokes"
+
+  element = driver.find_element(:name =>"email");
+  element.send_keys(username)
+
+  element = driver.find_element(:name =>"pass");
+  element.send_keys(password)
+
+  element.submit
+
+  return driver
+
+end
+
+# repoke a user
+def poker(driver,uid)
+  begin
+    element = driver.find_element(:xpath =>"//a[@ajaxify='/ajax/pokes/poke_inline.php?uid=#{uid}&pokeback=1']")
+    element.click
+    puts "#{Time.now} -- #{uid} POKED!"
+    return true
+
+  rescue
+    return false
+  end
+end
+
+
+def main(username,password,ids)
+  driver = startup(username,password)
+  lastpoke = Time.now
+
+  while true
+    driver.navigate.to "https://www.facebook.com/pokes?#{rand(20000)}"
+    sleep 10
+    ids.each do |id|
+      lastpoke = Time.now if poker(driver,id)
+    end
+    
+    if Time.now - lastpoke < 1000
+      sleep 30 + rand(100)
+    else
+      sleep 60 + rand(1200) 
+    end
+
+  end
+end
+
+if ARGV.length < 3
+  puts "USAGE: autopoke <username> <password> <id1>,<id2>,<id3>"
+  exit
+end
+
+main(ARGV[0],ARGV[1],ARGV[2].split(","))
+
