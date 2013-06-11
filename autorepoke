@@ -53,11 +53,8 @@ def main(username,password,ids)
       lastpoke = Time.now if poker(driver,id)
     end
     
-    if Time.now - lastpoke < 1000
-      sleep 30 + rand(100)
-    else
-      sleep 60 + rand(1200) 
-    end
+    sleep 30 + rand(100)
+    sleep rand(1200) if Time.now -lastpoke > 1000
 
   end
 end
