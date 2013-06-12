@@ -1,0 +1,42 @@
+#!/usr/bin/env ruby
+
+require 'autorepoke'
+require 'trollop'
+require 'io/console'
+
+opts = Trollop::options do
+  version Autorepoke::VERSION
+  banner <<-EOS
+Autorepoke just repokes people that are on a whitelist after they have poked you.  Really not much to it.  Use at your own risk!
+
+Usage:
+  autorepoke [options]
+
+Where options are:
+EOS
+
+  opt :username, "Facebook username", :type => :string
+  opt :password, "Facebook password", :type => :string
+  opt :ids, "Comma Separated list of numeric Facebook ids to poke back", :type => :string
+end
+
+username = opts.username
+password = opts.password
+ids = opts.ids.split(",")
+
+unless password
+  print "Facebook password: "
+  password = STDIN.noecho(&:gets)
+  print "\n"
+end
+
+
+#############################3
+#
+# create the client
+
+client = Autorepoke::Client.new(username,password,ids)
+
+client.start do |id|
+  puts "#{Time.now} POKED! #{id}"
+end
