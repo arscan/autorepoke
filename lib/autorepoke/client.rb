@@ -27,18 +27,13 @@ module Autorepoke
       element.submit
 
       sleep(5)
-      puts @driver.title
-
       return
     end
 
     def start
-      puts "starting up"
-
       lastpoke = Time.now
 
       while true
-        puts "going about it"
         @driver.navigate.to "https://www.facebook.com/pokes?#{rand(20000)}"
         sleep 10
         @ids.each do |id|
@@ -57,13 +52,11 @@ module Autorepoke
     def poker(uid)
       begin
         if @driver.find_element(:xpath =>"//a[@ajaxify='/ajax/pokes/poke_inline.php?uid=#{uid}&pokeback=1']").size > 0
-          puts "found them!"
           element = @driver.find_element(:xpath =>"//a[@ajaxify='/ajax/pokes/poke_inline.php?uid=#{uid}&pokeback=1']")
           element.click
           puts "#{Time.now} -- #{uid} POKED!"
           return true
         else
-          puts "didn't found them!"
           return false
         end
 
