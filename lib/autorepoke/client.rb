@@ -45,16 +45,18 @@ module Autorepoke
             end
           end
         end
+        sleep 30 + rand(100)
+        sleep 60 + rand(1200) if Time.now - lastpoke > 1000
+        sleep 60 + rand(1200) if Time.now - lastpoke > 10000
       end
     end
 
   private
     def poker(uid)
       begin
-        if @driver.find_element(:xpath =>"//a[@ajaxify='/ajax/pokes/poke_inline.php?uid=#{uid}&pokeback=1']").size > 0
+        if @driver.find_elements(:xpath =>"//a[@ajaxify='/ajax/pokes/poke_inline.php?uid=#{uid}&pokeback=1']").size > 0
           element = @driver.find_element(:xpath =>"//a[@ajaxify='/ajax/pokes/poke_inline.php?uid=#{uid}&pokeback=1']")
           element.click
-          puts "#{Time.now} -- #{uid} POKED!"
           return true
         else
           return false
