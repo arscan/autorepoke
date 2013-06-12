@@ -20,6 +20,11 @@ EOS
   opt :ids, "Comma Separated list of numeric Facebook ids to poke back", :type => :string
 end
 
+unless opts.ids
+  puts "ids required"
+  exit
+end
+
 username = opts.username
 password = opts.password
 ids = opts.ids.split(",")

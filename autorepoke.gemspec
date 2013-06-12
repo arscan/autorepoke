@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Autorepoke::VERSION
   spec.authors       = ["Rob Scanlon"]
   spec.email         = ["robscanlon@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{Auto poke back.  Use at own risk}
+  spec.summary       = spec.description
   spec.homepage      = ""
   spec.license       = "MIT"
 
@@ -20,6 +20,7 @@ Gem::Specification.new do |spec|
   
   spec.add_runtime_dependency "trollop"
   spec.add_runtime_dependency "selenium-webdriver"
+  spec.add_runtime_dependency "headless"
 
 
   spec.add_development_dependency "bundler", "~> 1.3"
