@@ -47,7 +47,7 @@ module Autorepoke
         end
         sleep 30 + rand(100)
         sleep 60 + rand(1200) if Time.now - lastpoke > 1000
-        sleep 60 + rand(1200) if Time.now - lastpoke > 10000
+        sleep 60 + rand(1200) if Time.now - lastpoke > 100000
       end
     end
 
