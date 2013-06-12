@@ -37,7 +37,7 @@ module Autorepoke
         @driver.navigate.to "https://www.facebook.com/pokes?#{rand(20000)}"
         sleep 10
         @ids.each do |id|
-          if poke(id)
+          if poker(id)
             lastpoke = Time.now
 
             if block_given?
