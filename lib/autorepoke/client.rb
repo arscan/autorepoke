@@ -1,10 +1,14 @@
 require 'selenium-webdriver'
 require 'headless'
+require 'logger'
 
 module Autorepoke
 
   class Client
     def initialize(username,password, ids)
+
+      @log = Logger.new("logging.txt", File::WRONLY | File::APPEND);
+      @log.info("Loaded client for ids #{ids}")
 
       @ids = ids
 
@@ -32,23 +36,31 @@ module Autorepoke
 
     def start
       lastpoke = Time.now
+      @log.info("starting up")
 
       while true
+        @log.debug("start iteration")
+
         @driver.navigate.to "https://www.facebook.com/pokes?#{rand(20000)}"
+
+        @log.debug("successfully loaded page")
         sleep 10
         @ids.each do |id|
+          @log.debug("trying #{id}")
           if poker(id)
             lastpoke = Time.now
+            @log.info("hit for #{id}")
 
             if block_given?
               yield id
             end
+            @log.debug("succesffully run subblock")
           end
         end
+        @log.debug("finished iterations"
         sleep 30 + rand(100)
         sleep 60 + rand(1200) if Time.now - lastpoke > 1000
         sleep 60 + rand(1200) if Time.now - lastpoke > 10000
-        sleep 60 + rand(1200) if Time.now - lastpoke > 100000
       end
     end
 
@@ -65,6 +77,7 @@ module Autorepoke
 
 
       rescue
+        @log.error("error finding button to press! #{$!}")
         return false
       end
     end
